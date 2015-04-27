@@ -18,8 +18,8 @@ pca_calculators = [
 dimension = 6
 # N is the number of samples
 n = 100
-np.random.seed(0)
 
+np.random.seed(0)
 def generate_sample_data():
   data = []
   for i in range(0,n):
