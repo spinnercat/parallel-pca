@@ -1,11 +1,5 @@
 # Class implementing the same algorithm as we run in parallel, but in serial for comparison purposes.
-from pca import PCA
-import numpy as np
-
 class SerialPCA(object):
-    def do_pca:
-        # ALBERT FILL OUT THIS FUCKING FUNCTION
-
     def doPCA_cov(self, data, blocks):
         def center(X):
             meanX = X.mean(axis = 1)[:,np.newaxis]
