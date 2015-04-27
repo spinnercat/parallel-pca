@@ -15,10 +15,11 @@ pca_calculators = [
 ]
 
 # Dimension of data for testing
-dimension = 3
+dimension = 6
 # N is the number of samples
-n = 4
+n = 100
 
+np.random.seed(0)
 def generate_sample_data():
   data = []
   for i in range(0,n):
