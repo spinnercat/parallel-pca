@@ -1,17 +1,17 @@
 import numpy as np
 from numpy_pca import NumpyPCA
-from parallel_pca import ParallelPCA
+#from parallel_pca import ParallelPCA
 from serial_pca import SerialPCA
 import time
 
 serial_pca = SerialPCA()
-parallel_pca = ParallelPCA()
+#parallel_pca = ParallelPCA()
 np_pca = NumpyPCA()
 
 pca_calculators = [
-  # {"name": "Serial", "pca": serial_pca},
+  {"name": "Serial", "pca": serial_pca},
   # {"name": "Parallel", "pca": parallel_pca},
-  {"name": "Numpy", "pca": np_pca}
+  # {"name": "Numpy", "pca": np_pca}
 ]
 
 # Dimension of data for testing

@@ -3,8 +3,9 @@ from pca import PCA
 import numpy as np
 
 class SerialPCA(object):
-    def do_pca:
-        # ALBERT FILL OUT THIS FUCKING FUNCTION
+    def do_pca(self, data):
+        return self.doPCA_cov(data, blocks)
+    #return self.doPCA_eig(data, blocks)
 
     def doPCA_cov(self, data, blocks):
         def center(X):
