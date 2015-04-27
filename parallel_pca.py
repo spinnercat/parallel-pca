@@ -1,15 +1,11 @@
 from mrjob.job import MRJob
 import numpy as np
+from pca import PCA
 
 # Class implementing PCA in parallel
-class ParallelPCA(object):
-  def __init__(self):
-
-  # Do nothing
-
-  def PCA(self):
-# Idk what to do
-
+class ParallelPCA(PCA):
+  def do_pca(self, data):
+    raise "Not implemented"
 
 N = 100001
 h = 1. / N
