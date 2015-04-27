@@ -5,7 +5,7 @@ from pca import PCA
 # Class implementing PCA in parallel
 class ParallelPCA(PCA):
   def do_pca(self, data):
-    raise "Not implemented"
+    raise Exception("Not implemented")
 
 N = 100001
 h = 1. / N

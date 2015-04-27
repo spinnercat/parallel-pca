@@ -3,4 +3,4 @@ from pca import PCA
 
 class SerialPCA(PCA):
   def do_pca(self, data):
-    raise "Not implemented"
+    raise Exception("Not implemented")
