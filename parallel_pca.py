@@ -1,4 +1,4 @@
-# from mrjob.job import MRJob
+from mrjob.job import MRJob
 import numpy as np
 from pca import PCA
 
@@ -11,12 +11,15 @@ class ParallelPCA(PCA):
 # dimensions
 # blocks?
 # size?
+dims = 3
 class MRPCACovParallel(MRJob):
     #def mapper_init(self):
     # self.sum = 0
 
   def mapper(self, _, line):
-    dataBlock = np.array(float(line.split()))
+    dataBlockRow = np.array(float(line.split()))
+    size = len(dataBlockRow) / dims
+    dataBlock = dataBlockRow.reshape((size, dims))
     yield None, 1./size * np.dot(dataBlock.T, dataBlock)
 
    #def mapper_final(self):
@@ -24,8 +27,9 @@ class MRPCACovParallel(MRJob):
 
   def reducer(self, _, values):
     total_cov = np.zeros(values[0].shape)
+    blocks = len(values)
     for cov in values:
-      total_cov += cov
+      total_cov += (1. / blocks) * cov
 
     w, v = np.linalg.eig(total_cov)
     yield w, v
@@ -35,9 +39,12 @@ class MRPCAEigenParallel(MRJob):
     self.sum = 0
 
   def mapper(self, _, line):
-    dataBlock =
+    dataBlockRow = np.array(float(line.split()))
+    size = len(dataBlockRow) / dims
+    dataBlock = dataBlockRow.reshape((size, dims))
     cov = 1./size * np.dot(dataBlock.T, dataBlock)
-    w, v = np.linalg.eig(covs[k])
+    w, v = np.linalg.eig(cov)
+    yield None, v
 
   #def mapper_final(self):
   #  yield None, self.sum
