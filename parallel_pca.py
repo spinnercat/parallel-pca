@@ -1,4 +1,5 @@
 from mrjob.job import MRJob
+from mrjob.protocol import PickleProtocol
 import numpy as np
 from pca import PCA
 
@@ -11,13 +12,18 @@ class ParallelPCA(PCA):
 # dimensions
 # blocks?
 # size?
-dims = 3
+dims = 4
+blocks = 2
+per_block = 2
 class MRPCACovParallel(MRJob):
     #def mapper_init(self):
     # self.sum = 0
 
+  MRJob.INTERNAL_PROTOCOL = PickleProtocol
+  MRJob.OUTPUT_PROTOCOL = PickleProtocol
+
   def mapper(self, _, line):
-    dataBlockRow = np.array(float(line.split()))
+    dataBlockRow = np.array([float(x) for x in line.split()])
     size = len(dataBlockRow) / dims
     dataBlock = dataBlockRow.reshape((size, dims))
     yield None, 1./size * np.dot(dataBlock.T, dataBlock)
@@ -26,8 +32,7 @@ class MRPCACovParallel(MRJob):
    #  yield None, self.sum
 
   def reducer(self, _, values):
-    total_cov = np.zeros(values[0].shape)
-    blocks = len(values)
+    total_cov = np.zeros((dims, dims))
     for cov in values:
       total_cov += (1. / blocks) * cov
 
@@ -35,11 +40,11 @@ class MRPCACovParallel(MRJob):
     yield w, v
 
 class MRPCAEigenParallel(MRJob):
-  def mapper_init(self):
-    self.sum = 0
+    #def mapper_init(self):
+    #self.sum = 0
 
   def mapper(self, _, line):
-    dataBlockRow = np.array(float(line.split()))
+    dataBlockRow = np.array([float(x) for x in line.split()])
     size = len(dataBlockRow) / dims
     dataBlock = dataBlockRow.reshape((size, dims))
     cov = 1./size * np.dot(dataBlock.T, dataBlock)
@@ -50,18 +55,19 @@ class MRPCAEigenParallel(MRJob):
   #  yield None, self.sum
 
   def reducer(self, _, values):
-    for eig in eigs:
-      eigs = np.hstack((eigs, v))
-    total_cov = np.zeros(values[0].shape)
-    for cov in values:
-      total_cov += cov
+    eigs = np.array([])
+    for eig in values:
+      if len(eigs) == 0:
+        eigs = eig
+      else:
+        eigs = np.hstack((eigs, eig))
 
-    w, v = np.linalg.eig(total_cov)
-    R = 1 / len(means) * np.dot(eigs.T, eigs)
+    R = 1. / per_block * np.dot(eigs.T, eigs)
     wR, vR = np.linalg.eig(R)
     wR[wR < 0] = 0.1
-    inv_sqrt = size * np.diag(wR**(-0.5))
+    inv_sqrt = per_block * np.diag(wR**(-0.5))
     vT = np.dot(np.dot(eigs, vR), inv_sqrt)
+    print wR, vT.T
     yield wR, vT.T
 
 if __name__ == '__main__':
