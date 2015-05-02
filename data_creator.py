@@ -38,11 +38,15 @@ def split_data(data):
     results.append(row)
   return results
 
-data = generate_sample_data()
-split_data = split_data(data)
+if __name__ == '__main__':
+  data = generate_sample_data()
+  split_data = split_data(data)
 
-out_file = open("data.out", 'wr')
-for row in split_data:
-  for x in row:
-    out_file.write(str(x)+" ")
-  out_file.write("\n")
+  out_file = open("data.out", 'wr')
+  for row in split_data:
+    for x in row:
+      out_file.write(str(x)+" ")
+    out_file.write("\n")
+
+  out_file.close()
+
