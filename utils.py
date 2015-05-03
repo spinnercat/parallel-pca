@@ -7,8 +7,8 @@ vs: m-by-n
 xs: p-by-n
 """
 def project(vs, xs):
-    for row in vs:
-        row /= np.float(np.sqrt(sum(row**2)))
+    # for row in vs:
+    #     row /= np.float(np.sqrt(sum(row**2)))
 
     return np.dot(vs, xs.T)
 

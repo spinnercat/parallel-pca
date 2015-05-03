@@ -18,11 +18,13 @@ class NumpyPCA(PCA):
         row[i] = row[i] - mean
     x = data
     print "getting covariance"
+    print data.shape
     covariance_matrix = np.dot(data, np.transpose(data))
     print "got covariance"
     print covariance_matrix.shape
     [eigenvalues,eigenvectors] =  la.eig(covariance_matrix)
-    eigenvectors = np.transpose(eigenvectors)
+    eigenvectors = np.transpose(np.real(eigenvectors))
+    eigenvalues = np.real(eigenvalues)
     print "got eigenvectors"
 
     # Sort by eigenvalue
@@ -33,7 +35,7 @@ class NumpyPCA(PCA):
 
     eigenvectors = []
     eigenvalues = []
-    for i in range(0, len(combined)):
+    for i in range(0, 2):
       eigenvectors.append(combined[i][0])
       eigenvalues.append(combined[i][1])
 
