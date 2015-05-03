@@ -4,8 +4,11 @@ import numpy as np
 from pca import PCA
 from data_creator import n, dimension, num_blocks
 import time
+import utils
 
-SMART = False
+from ParallelPCATester import read_file
+
+SMART = True
 
 # Class implementing PCA in parallel
 class ParallelPCA(PCA):
@@ -24,23 +27,29 @@ class MRPCACovParallel(MRJob):
   MRJob.INTERNAL_PROTOCOL = PickleProtocol
   MRJob.OUTPUT_PROTOCOL = PickleProtocol
 
-  def mapper(self, _, line):
+  def mapper(self, k, line):
+    print "mapper", k
     dataBlockRow = np.array([float(x) for x in line.split()])
     size = len(dataBlockRow) / dimension
     dataBlock = dataBlockRow.reshape((size, dimension))
-    yield None, 1./size * np.dot(dataBlock.T, dataBlock)
+    print "doing multiplication"
+    cov = 1./size * np.dot(dataBlock.T, dataBlock)
+    print "done with mutiplication"
+    yield None, cov
 
    #def mapper_final(self):
    #  yield None, self.sum
 
   def reducer(self, _, values):
+    print "reducer"
     total_cov = np.zeros((dimension, dimension))
     for cov in values:
       total_cov += (1. / num_blocks) * cov
 
+    print "calculate eigenvalues"
     w, v = np.linalg.eig(total_cov)
     print w, v.T
-    yield w, v
+    yield None, None
 
 class MRPCAEigenParallel(MRJob):
 
@@ -80,17 +89,28 @@ class MRPCAEigenParallel(MRJob):
 
     inv_sqrt = np.diag((per_block * wR)**(-0.5))
     vT = np.dot(np.dot(psis, vR), inv_sqrt)
+
     idx = (-wR).argsort()
-    print wR[idx], vT[:,idx].T
-    yield wR[idx], vT[:,idx].T
+    print wR[idx], vT[:,idx[:5]].T
+    yield None, vT[:,idx[:5]].T
 
 if __name__ == '__main__':
+    data = read_file('images.txt')
+
     file = open('data.out', 'r')
     mr_job = MRPCAEigenParallel()
     mr_job.sandbox(stdin=file)
+
     start_time = time.time()
     with mr_job.make_runner() as runner:
         runner.run()
+        for line in runner.stream_output():
+            _, value = mr_job.parse_output_line(line)
     end_time = time.time()
+
+    utils.calc_error(value, np.array(data))
     print "Time", end_time - start_time
+
+
+
 

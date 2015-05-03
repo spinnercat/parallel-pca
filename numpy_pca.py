@@ -41,5 +41,5 @@ class NumpyPCA(PCA):
 
     eigenvectors = np.array(eigenvectors)
 
-
     utils.calc_error(eigenvectors, orig_data)
+
