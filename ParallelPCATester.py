@@ -47,7 +47,6 @@ if __name__ == '__main__':
     components = calculator["pca"].do_pca(test_data)
     end_time = time.time()
     print "PCA calculation using "+calculator["name"]
-    print components
     print "\n\n\n\n"
 
 

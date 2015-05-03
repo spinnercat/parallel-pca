@@ -7,8 +7,8 @@ vs: m-by-n
 xs: p-by-n
 """
 def project(vs, xs):
-    for row in vs:
-        row /= np.float(np.sqrt(sum(row**2)))
+    # for row in vs:
+    #     row /= np.float(np.sqrt(sum(row**2)))
 
     return np.dot(vs, xs.T)
 
@@ -19,7 +19,7 @@ def calc_error(vs, xs):
     rec = np.dot(compressed.T, vs)
     print rec
 
-    print np.sum(np.sum((rec - xs))**2)
+    print np.sum((rec - xs)**2)
 
 if __name__ == '__main__':
     vs = np.array([[1., 0., 0.], [0., 1., 0.]])
