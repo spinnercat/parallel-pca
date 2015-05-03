@@ -66,7 +66,7 @@ class MRPCAEigenParallel(MRJob):
         cov = 1./size * np.dot(dataBlock.T, dataBlock)
         w, v = np.linalg.eig(cov)
 
-    num_eigens = 2
+    num_eigens = 10
     idx = (-w).argsort()
     w = w[idx[:num_eigens]]
     v = v[:,idx[:num_eigens]]
@@ -91,8 +91,8 @@ class MRPCAEigenParallel(MRJob):
     vT = np.dot(np.dot(psis, vR), inv_sqrt)
 
     idx = (-wR).argsort()
-    print wR[idx], vT[:,idx[:5]].T
-    yield None, vT[:,idx[:5]].T
+    print wR[idx], vT[:,idx[:20]].T
+    yield None, vT[:,idx[:20]].T
 
 if __name__ == '__main__':
     data = read_file('images.txt')
@@ -110,7 +110,4 @@ if __name__ == '__main__':
 
     utils.calc_error(value, np.array(data))
     print "Time", end_time - start_time
-
-
-
 
