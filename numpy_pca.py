@@ -2,10 +2,14 @@
 from pca import PCA
 import numpy as np
 from numpy import linalg as la
+import utils
+import copy
 
 
 class NumpyPCA(PCA):
-  def do_pca(self, data):
+  def do_pca(self, orig_data):
+    data = copy.copy(orig_data)
+
     # Step 1: Make all data mean 0
     data = np.transpose(data)
     for row in data:
@@ -13,10 +17,13 @@ class NumpyPCA(PCA):
       for i in range(0, len(row)):
         row[i] = row[i] - mean
     x = data
-
+    print "getting covariance"
     covariance_matrix = np.dot(data, np.transpose(data))
+    print "got covariance"
+    print covariance_matrix.shape
     [eigenvalues,eigenvectors] =  la.eig(covariance_matrix)
     eigenvectors = np.transpose(eigenvectors)
+    print "got eigenvectors"
 
     # Sort by eigenvalue
     combined = []
@@ -30,5 +37,7 @@ class NumpyPCA(PCA):
       eigenvectors.append(combined[i][0])
       eigenvalues.append(combined[i][1])
 
-    print eigenvalues
-    print eigenvectors
+    eigenvectors = np.array(eigenvectors)
+
+
+    utils.calc_error(eigenvectors, orig_data)
