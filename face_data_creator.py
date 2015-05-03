@@ -9,25 +9,25 @@ height = 80
 
 dimension = width * height
 
-out_file = open("images.txt", "w")
-means_file = open("means.txt", "w")
+out_file = open("images_many.txt", "w")
+means_file = open("means_many.txt", "w")
 num_doubles = 0
 
 results = []
 
 for path, dirnames, filenames in os.walk('cohn-kanade'):
-  num_to_add = 2 if num_doubles < 25 else 1
-  if len(filenames) > 5:
-    num_doubles += 1
+  # num_to_add = 2 if num_doubles < 25 else 1
+  # if len(filenames) > 5:
+  #   num_doubles += 1
   for filename in filenames:
-      if filename == ".DS_Store" or num_to_add <= 0:
+      if filename == ".DS_Store":
         continue
       image_path = os.path.join(path, filename)
       image = Image.open(image_path)
       data = image.getdata()
       row = [x[0] for x in list(data)]
       results.append(row)
-      num_to_add -= 1
+      # num_to_add -= 1
 
 means = []
 

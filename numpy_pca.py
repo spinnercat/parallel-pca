@@ -35,11 +35,11 @@ class NumpyPCA(PCA):
 
     eigenvectors = []
     eigenvalues = []
-    for i in range(0, 2):
+    for i in range(0, 100):
       eigenvectors.append(combined[i][0])
       eigenvalues.append(combined[i][1])
 
     eigenvectors = np.array(eigenvectors)
 
-    utils.calc_error(eigenvectors, orig_data)
 
+    utils.calc_error(eigenvectors, orig_data)
