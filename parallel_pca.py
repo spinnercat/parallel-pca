@@ -4,6 +4,9 @@ import numpy as np
 from pca import PCA
 from data_creator import n, dimension, num_blocks
 
+
+SMART = False
+
 # Class implementing PCA in parallel
 class ParallelPCA(PCA):
   def do_pca(self, data):
@@ -40,20 +43,26 @@ class MRPCACovParallel(MRJob):
     yield w, v
 
 class MRPCAEigenParallel(MRJob):
-    #def mapper_init(self):
-    #self.sum = 0
 
   def mapper(self, _, line):
     dataBlockRow = np.array([float(x) for x in line.split()])
     size = len(dataBlockRow) / dimension
     dataBlock = dataBlockRow.reshape((size, dimension))
-    cov = 1./size * np.dot(dataBlock.T, dataBlock)
-    w, v = np.linalg.eig(cov)
+
+    if SMART:
+        cov = 1./size * np.dot(dataBlock, dataBlock.T)
+        w, v = np.linalg.eig(cov)
+        v = np.dot(dataBlock.T, v)
+    else:
+        cov = 1./size * np.dot(dataBlock.T, dataBlock)
+        w, v = np.linalg.eig(cov)
+
+    num_eigens = 2
+    idx = (-w).argsort()
+    w = w[idx[:num_eigens]]
+    v = v[:,idx[:num_eigens]]
     psi = np.dot(v, (np.diag((per_block * w)**0.5)))
     yield None, psi 
-
-  #def mapper_final(self):
-  #  yield None, self.sum
 
   def reducer(self, _, values):
     psis = np.array([])
@@ -65,6 +74,9 @@ class MRPCAEigenParallel(MRJob):
 
     R = 1. / per_block * np.dot(psis.T, psis)
     wR, vR = np.linalg.eig(R)
+    wR = np.real(wR)
+    vR = np.real(vR)
+    wR[wR <= 0] = 1e-20
 
     inv_sqrt = np.diag((per_block * wR)**(-0.5))
     vT = np.dot(np.dot(psis, vR), inv_sqrt)
