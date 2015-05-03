@@ -3,7 +3,7 @@ from mrjob.protocol import PickleProtocol
 import numpy as np
 from pca import PCA
 from data_creator import n, dimension, num_blocks
-
+import time
 
 SMART = False
 
@@ -85,5 +85,12 @@ class MRPCAEigenParallel(MRJob):
     yield wR[idx], vT[:,idx].T
 
 if __name__ == '__main__':
-    MRPCAEigenParallel.run()
+    file = open('data.out', 'r')
+    mr_job = MRPCAEigenParallel()
+    mr_job.sandbox(stdin=file)
+    start_time = time.time()
+    with mr_job.make_runner() as runner:
+        runner.run()
+    end_time = time.time()
+    print "Time", end_time - start_time
 
