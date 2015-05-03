@@ -10,8 +10,8 @@ variables into another file.
 import numpy as np
 import pickle
 
-n = 1000 # Number of data points
-dimension = 5 # Dimension of each point
+n = 512 # Number of data points
+dimension = 100 * 80 # Dimension of each point
 num_blocks = 4
 
 np.random.seed(0)
@@ -28,25 +28,29 @@ def generate_sample_data():
     data.append(datum)
   return np.array(data)
 
-def split_data(data):
-  results = []
+def split_data(data, out_file):
   num_per_block = n / num_blocks
   for block in range(0, num_blocks):
+    print block
     row = []
     for i in range(num_per_block):
-      row.extend(data[block * num_per_block + i])
-    results.append(row)
+      out_file.write(" ".join(data[block * num_per_block + i])+" ")
+    out_file.write("\n")
+
+def read_file(file):
+  file = open(file)
+  results = []
+  row_count = 0
+  for row in file:
+    row_count += 1
+    if row_count % 500 == 100:
+      print row_count
+    results.append(row.split())
   return results
 
 if __name__ == '__main__':
-  data = generate_sample_data()
-  split_data = split_data(data)
-
-  out_file = open("data.out", 'wr')
-  for row in split_data:
-    for x in row:
-      out_file.write(str(x)+" ")
-    out_file.write("\n")
-
+  # data = generate_sample_data()
+  data = read_file("images.txt")
+  out_file = open("data.out", 'w')
+  split_data(data, out_file)
   out_file.close()
-
