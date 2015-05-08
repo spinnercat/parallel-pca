@@ -15,7 +15,6 @@ class ParallelPCA(PCA):
   def do_pca(self, data):
     raise Exception("Not implemented")
 
-#TODO(mardo): form of input?
 # dimensions
 # blocks?
 # size?
@@ -91,8 +90,8 @@ class MRPCAEigenParallel(MRJob):
     vT = np.dot(np.dot(psis, vR), inv_sqrt)
 
     idx = (-wR).argsort()
-    print wR[idx], vT[:,idx[:20]].T
-    yield None, vT[:,idx[:20]].T
+    print wR[idx], vT[:,idx[:5]].T
+    yield None, vT[:,idx[:5]].T
 
 if __name__ == '__main__':
     data = read_file('images.txt')
@@ -108,6 +107,10 @@ if __name__ == '__main__':
             _, value = mr_job.parse_output_line(line)
     end_time = time.time()
 
+    print value.shape
+    print np.array(data).shape
+    utils.reconstruct_images(value, np.array(data))
     utils.calc_error(value, np.array(data))
+
     print "Time", end_time - start_time
 

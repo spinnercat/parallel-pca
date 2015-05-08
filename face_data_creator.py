@@ -29,6 +29,7 @@ for path, dirnames, filenames in os.walk('cohn-kanade'):
       results.append(row)
       # num_to_add -= 1
 
+
 means = []
 
 for feature in range(0, dimension):

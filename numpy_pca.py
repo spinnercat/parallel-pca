@@ -35,11 +35,12 @@ class NumpyPCA(PCA):
 
     eigenvectors = []
     eigenvalues = []
-    for i in range(0, 100):
+    for i in range(0, len(combined)):
       eigenvectors.append(combined[i][0])
       eigenvalues.append(combined[i][1])
 
     eigenvectors = np.array(eigenvectors)
 
-
-    utils.calc_error(eigenvectors, orig_data)
+    # utils.reconstruct_images(eigenvectors, orig_data)
+    # utils.calc_error(eigenvectors, orig_data)
+    utils.save_eigenvectors(eigenvectors)

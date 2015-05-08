@@ -73,6 +73,7 @@ class SerialPCA(object):
         covs = []
         psis = np.array([])
         for k in range(blocks):
+            print "started block ", k
             dataBlock = dataNew[(k * size):((k + 1) * size),:]
             # do the inner product instead of outer product
             covs.append(1./size * np.dot(dataBlock, dataBlock.T))

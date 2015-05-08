@@ -9,9 +9,9 @@ serial_pca = SerialPCA()
 np_pca = NumpyPCA()
 
 pca_calculators = [
-  {"name": "Serial", "pca": serial_pca},
+  # {"name": "Serial", "pca": serial_pca},
   # {"name": "Parallel", "pca": parallel_pca},
-  #{"name": "Numpy", "pca": np_pca}
+  {"name": "Numpy", "pca": np_pca}
 ]
 
 # Dimension of data for testing
@@ -41,9 +41,11 @@ def read_file(file):
 
 if __name__ == '__main__':
   data = read_file('images.txt')
+  print "done reading"
   for calculator in pca_calculators:
     test_data = np.copy(data)
     start_time = time.time()
+    print "starting time"
     components = calculator["pca"].do_pca(test_data)
     end_time = time.time()
     print "PCA calculation using "+calculator["name"]
