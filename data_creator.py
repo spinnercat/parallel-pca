@@ -10,7 +10,7 @@ variables into another file.
 import numpy as np
 import pickle
 
-n = 8795 # Number of data points
+n = 512 # Number of data points
 dimension = 100 * 80 # Dimension of each point
 num_blocks = 4
 
