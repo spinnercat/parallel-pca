@@ -17,7 +17,7 @@ def calc_error(vs, xs):
     compressed = project(vs, xs)
     print compressed
     rec = np.dot(compressed.T, vs)
-    print re
+    print rec
 
     print np.sqrt(np.sum((rec - xs)**2) / rec.size)
 
