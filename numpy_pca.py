@@ -4,6 +4,7 @@ import numpy as np
 from numpy import linalg as la
 import utils
 import copy
+from matrix_utils import matrix_multiply
 
 
 class NumpyPCA(PCA):
@@ -19,7 +20,7 @@ class NumpyPCA(PCA):
     x = data
     print "getting covariance"
     print data.shape
-    covariance_matrix = np.dot(data, np.transpose(data))
+    covariance_matrix = matrix_multiply(data, np.transpose(data))
     print "got covariance"
     print covariance_matrix.shape
     [eigenvalues,eigenvectors] =  la.eig(covariance_matrix)
