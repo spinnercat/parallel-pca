@@ -109,7 +109,7 @@ if __name__ == '__main__':
 
     print value.shape
     print np.array(data).shape
-    utils.reconstruct_images(value, np.array(data))
+    # utils.reconstruct_images(value, np.array(data))
     utils.calc_error(value, np.array(data))
 
     print "Time", end_time - start_time
