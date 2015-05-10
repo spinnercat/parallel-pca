@@ -43,14 +43,12 @@ def read_file(file):
   row_count = 0
   for row in file:
     row_count += 1
-    if row_count % 500 == 100:
-      print row_count
     results.append(row.split())
   return results
 
 if __name__ == '__main__':
   # data = generate_sample_data()
   data = read_file("images.txt")
-  out_file = open("data.out", 'w')
+  out_file = open("data_4_blocks", 'w')
   split_data(data, out_file)
   out_file.close()
