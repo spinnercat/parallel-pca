@@ -21,8 +21,6 @@ class ParallelPCA(PCA):
 # size?
 per_block = n / num_blocks
 class MRPCACovParallel(MRJob):
-    #def mapper_init(self):
-    # self.sum = 0
 
   MRJob.INTERNAL_PROTOCOL = PickleProtocol
   MRJob.OUTPUT_PROTOCOL = PickleProtocol
@@ -37,9 +35,6 @@ class MRPCACovParallel(MRJob):
     print "done with mutiplication"
     yield None, cov
 
-   #def mapper_final(self):
-   #  yield None, self.sum
-
   def reducer(self, _, values):
     print "reducer"
     total_cov = np.zeros((dimension, dimension))
@@ -48,8 +43,11 @@ class MRPCACovParallel(MRJob):
 
     print "calculate eigenvalues"
     w, v = np.linalg.eig(total_cov)
+    num_eigens = 1
+    idx = (-w).argsort()
+    v = v[:,idx[:num_eigens]]
     print w, v.T
-    yield None, None
+    yield None, v.T
 
 class MRPCAEigenParallel(MRJob):
 
@@ -90,15 +88,16 @@ class MRPCAEigenParallel(MRJob):
     inv_sqrt = np.diag((per_block * wR)**(-0.5))
     vT = np.dot(np.dot(psis, vR), inv_sqrt)
 
+    num_final_eigens = 50
     idx = (-wR).argsort()
-    print wR[idx], vT[:,idx[:20]].T
-    yield None, vT[:,idx[:20]].T
+    print wR[idx], vT[:,idx[:num_final_eigens]].T
+    yield None, vT[:,idx[:num_final_eigens]].T
 
 if __name__ == '__main__':
     data = read_file('images.txt')
 
     file = open('data.out', 'r')
-    mr_job = MRPCAEigenParallel()
+    mr_job = MRPCACovParallel()
     mr_job.sandbox(stdin=file)
 
     start_time = time.time()

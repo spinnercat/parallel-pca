@@ -35,7 +35,8 @@ class NumpyPCA(PCA):
 
     eigenvectors = []
     eigenvalues = []
-    for i in range(0, 2):
+    numFinalEigens = 100
+    for i in range(0, numFinalEigens):
       eigenvectors.append(combined[i][0])
       eigenvalues.append(combined[i][1])
 
