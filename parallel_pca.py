@@ -5,16 +5,13 @@ from pca import PCA
 from data_creator import n, dimension, num_blocks
 import time
 import utils
+from matrix_utils import matrix_multiply
 
 from ParallelPCATester import read_file
 
 SMART = True
 
 # Class implementing PCA in parallel
-class ParallelPCA(PCA):
-  def do_pca(self, data):
-    raise Exception("Not implemented")
-
 # dimensions
 # blocks?
 # size?
@@ -32,7 +29,7 @@ class MRPCACovParallel(MRJob):
     size = len(dataBlockRow) / dimension
     dataBlock = dataBlockRow.reshape((size, dimension))
     print "doing multiplication"
-    cov = 1./size * np.dot(dataBlock.T, dataBlock)
+    cov = 1./size * matrix_multiply(dataBlock.T, dataBlock)
     print "done with mutiplication"
     yield None, cov
 
@@ -58,21 +55,22 @@ class MRPCAEigenParallel(MRJob):
     dataBlock = dataBlockRow.reshape((size, dimension))
 
     if SMART:
-        cov = 1./size * np.dot(dataBlock, dataBlock.T)
+        cov = 1./size * matrix_multiply(dataBlock, dataBlock.T)
         w, v = np.linalg.eig(cov)
-        v = np.dot(dataBlock.T, v)
+        v = matrix_multiply(dataBlock.T, v)
     else:
-        cov = 1./size * np.dot(dataBlock.T, dataBlock)
+        cov = 1./size * matrix_multiply(dataBlock.T, dataBlock)
         w, v = np.linalg.eig(cov)
 
     num_eigens = 10
     idx = (-w).argsort()
     w = w[idx[:num_eigens]]
     v = v[:,idx[:num_eigens]]
-    psi = np.dot(v, (np.diag((per_block * w)**0.5)))
+    psi = matrix_multiply(v, (np.diag((per_block * w)**0.5)))
     yield None, psi 
 
   def reducer(self, _, values):
+    start_time_x = time.time()
     psis = np.array([])
     for psi in values:
       if len(psis) == 0:
@@ -80,38 +78,39 @@ class MRPCAEigenParallel(MRJob):
       else:
         psis = np.hstack((psis, psi))
 
-    R = 1. / per_block * np.dot(psis.T, psis)
+    R = 1. / per_block * matrix_multiply(psis.T, psis)
     wR, vR = np.linalg.eig(R)
     wR = np.real(wR)
     vR = np.real(vR)
     wR[wR <= 0] = 1e-20
 
     inv_sqrt = np.diag((per_block * wR)**(-0.5))
-    vT = np.dot(np.dot(psis, vR), inv_sqrt)
+    vT = matrix_multiply(matrix_multiply(psis, vR), inv_sqrt)
 
     idx = (-wR).argsort()
-    print wR[idx], vT[:,idx[:5]].T
-    yield None, vT[:,idx[:5]].T
+    end_time_x = time.time()
+    print vT, idx
+    print "reduce time ",end_time_x - start_time_x
+    yield None, 0
 
 if __name__ == '__main__':
-    # data = read_file('images.txt')
-    #
-    # file = open('data.out', 'r')
-    # mr_job = MRPCAEigenParallel()
-    # mr_job.sandbox(stdin=file)
-    #
-    # start_time = time.time()
-    # with mr_job.make_runner() as runner:
-    #     runner.run()
-    #     for line in runner.stream_output():
-    #         _, value = mr_job.parse_output_line(line)
-    # end_time = time.time()
-    #
-    # print value.shape
-    # print np.array(data).shape
-    # # utils.reconstruct_images(value, np.array(data))
+    data = read_file('images.txt')
+
+    file = open('data.out', 'r')
+    mr_job = MRPCAEigenParallel()
+    mr_job.sandbox(stdin=file)
+
+    start_time = time.time()
+    print "start time ", start_time
+    with mr_job.make_runner() as runner:
+        runner.run()
+        for line in runner.stream_output():
+            _, value = mr_job.parse_output_line(line)
+    end_time = time.time()
+
+    # utils.reconstruct_images(value, np.array(data))
     # utils.calc_error(value, np.array(data))
-    #
-    # print "Time", end_time - start_time
-    MRPCAEigenParallel.run()
+
+    print "Time", end_time - start_time
+    # MRPCAEigenParallel.run()
 
