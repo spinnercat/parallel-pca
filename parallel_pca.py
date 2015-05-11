@@ -93,23 +93,23 @@ class MRPCAEigenParallel(MRJob):
     yield None, 0
 
 if __name__ == '__main__':
-    data = read_file('images.txt')
-
-    file = open('data.out', 'r')
-    mr_job = MRPCAEigenParallel()
-    mr_job.sandbox(stdin=file)
-
-    start_time = time.time()
-    print "start time ", start_time
-    with mr_job.make_runner() as runner:
-        runner.run()
-        for line in runner.stream_output():
-            _, value = mr_job.parse_output_line(line)
-    end_time = time.time()
-
-    # utils.reconstruct_images(value, np.array(data))
-    # utils.calc_error(value, np.array(data))
-
-    print "Time", end_time - start_time
-    # MRPCAEigenParallel.run()
+    # data = read_file('images.txt')
+    #
+    # file = open('data.out', 'r')
+    # mr_job = MRPCAEigenParallel()
+    # mr_job.sandbox(stdin=file)
+    #
+    # start_time = time.time()
+    # print "start time ", start_time
+    # with mr_job.make_runner() as runner:
+    #     runner.run()
+    #     for line in runner.stream_output():
+    #         _, value = mr_job.parse_output_line(line)
+    # end_time = time.time()
+    #
+    # # utils.reconstruct_images(value, np.array(data))
+    # # utils.calc_error(value, np.array(data))
+    #
+    # print "Time", end_time - start_time
+    MRPCAEigenParallel.run()
 
