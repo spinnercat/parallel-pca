@@ -40,16 +40,15 @@ def read_file(file):
   return results
 
 if __name__ == '__main__':
-  data = read_file('images.txt')
   print "done reading"
   for calculator in pca_calculators:
-    test_data = np.copy(data)
     start_time = time.time()
+    data = read_file('images.txt')
+    test_data = np.copy(data)
     print "starting time"
     components = calculator["pca"].do_pca(test_data)
     end_time = time.time()
     print "PCA calculation using "+calculator["name"]
     print "Time:", end_time - start_time
-    print components
     print "\n\n\n\n"
 
