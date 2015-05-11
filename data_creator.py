@@ -12,7 +12,7 @@ import pickle
 
 n = 512 # Number of data points
 dimension = 100 * 80 # Dimension of each point
-num_blocks = 4
+num_blocks = 16
 
 np.random.seed(0)
 
@@ -49,6 +49,6 @@ def read_file(file):
 if __name__ == '__main__':
   # data = generate_sample_data()
   data = read_file("images.txt")
-  out_file = open("data_4_blocks", 'w')
+  out_file = open("data_16_blocks", 'w')
   split_data(data, out_file)
   out_file.close()

@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bb3049a9-ca33-4e5c-b234-f32336f705b0" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data_creator.py" afterPath="$PROJECT_DIR$/data_creator.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/parallel_pca.py" afterPath="$PROJECT_DIR$/parallel_pca.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="parallel-pca.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -42,8 +44,8 @@
       <file leaf-file-name="data_creator.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/data_creator.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="90" max-vertical-offset="885">
-              <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="885">
+              <caret line="51" column="40" selection-start-line="51" selection-start-column="40" selection-end-line="51" selection-end-column="40" />
               <folding />
             </state>
           </provider>
@@ -84,8 +86,8 @@
       <file leaf-file-name="parallel_pca.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/parallel_pca.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.9328859" vertical-offset="1293" max-vertical-offset="1815">
-              <caret line="114" column="0" selection-start-line="114" selection-start-column="0" selection-end-line="114" selection-end-column="0" />
+            <state vertical-scroll-proportion="-2.52349" vertical-offset="1413" max-vertical-offset="1860">
+              <caret line="19" column="14" selection-start-line="19" selection-start-column="14" selection-end-line="19" selection-end-column="14" />
               <folding>
                 <element signature="e#0#27#0" expanded="true" />
               </folding>
@@ -153,11 +155,11 @@
         <option value="$PROJECT_DIR$/NumpyPCA.py" />
         <option value="$PROJECT_DIR$/SerialPCA.py" />
         <option value="$PROJECT_DIR$/numpy_pca.py" />
-        <option value="$PROJECT_DIR$/data_creator.py" />
         <option value="$PROJECT_DIR$/utils.py" />
         <option value="$PROJECT_DIR$/matrix_utils.py" />
         <option value="$PROJECT_DIR$/serial_pca.py" />
         <option value="$PROJECT_DIR$/ParallelPCATester.py" />
+        <option value="$PROJECT_DIR$/data_creator.py" />
         <option value="$PROJECT_DIR$/parallel_pca.py" />
       </list>
     </option>
@@ -222,6 +224,11 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="LayoutCode.rearrangeEntriesPython" value="false" />
     <property name="FullScreen" value="false" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings />
+    </option>
   </component>
   <component name="RunManager">
     <configuration default="true" type="DjangoTestsConfigurationType" factoryName="Django tests">
@@ -869,14 +876,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data_creator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="90" max-vertical-offset="885">
-          <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/matrix_utils.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="390">
@@ -905,10 +904,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/data_creator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="411" max-vertical-offset="885">
+          <caret line="51" column="40" selection-start-line="51" selection-start-column="40" selection-end-line="51" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/parallel_pca.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9328859" vertical-offset="1293" max-vertical-offset="1815">
-          <caret line="114" column="0" selection-start-line="114" selection-start-column="0" selection-end-line="114" selection-end-column="0" />
+        <state vertical-scroll-proportion="-2.52349" vertical-offset="1413" max-vertical-offset="1860">
+          <caret line="19" column="14" selection-start-line="19" selection-start-column="14" selection-end-line="19" selection-end-column="14" />
           <folding>
             <element signature="e#0#27#0" expanded="true" />
           </folding>
