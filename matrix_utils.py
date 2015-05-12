@@ -13,8 +13,6 @@ def matrix_multiply(A, B):
   # Dimensions would be rows_A x cols_B
   C = [[0 for row in range(cols_B)] for col in range(rows_A)]
 
-  print rows_A
-
   for i in xrange(rows_A):
     print i
     for k in xrange(cols_A):
