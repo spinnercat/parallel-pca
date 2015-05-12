@@ -6,9 +6,10 @@ from matrix_utils import matrix_multiply
 
 class SerialPCA(object):
     def do_pca(self, data):
+        num_blocks = 16
         #return self.doPCA_cov(data, 2)
         #return self.doPCA_eig(data, 2)
-        return self.doPCA_eig_smart(data, 4)
+        return self.doPCA_eig_smart(data, num_blocks)
 
     def doPCA_cov(self, data, blocks):
         def center(X):
