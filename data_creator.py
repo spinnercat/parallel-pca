@@ -47,7 +47,6 @@ def read_file(file):
   return results
 
 if __name__ == '__main__':
-  # data = generate_sample_data()
   data = read_file("images.txt")
   out_file = open("data_16_blocks", 'w')
   split_data(data, out_file)

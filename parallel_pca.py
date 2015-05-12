@@ -110,9 +110,8 @@ if __name__ == '__main__':
             _, value = mr_job.parse_output_line(line)
     end_time = time.time()
 
-    # utils.reconstruct_images(value, np.array(data))
-    # utils.calc_error(value, np.array(data))
+    utils.reconstruct_images(value, np.array(data))
+    utils.calc_error(value, np.array(data))
 
     print "Time", end_time - start_time
-    # MRPCAEigenParallel.run()
 

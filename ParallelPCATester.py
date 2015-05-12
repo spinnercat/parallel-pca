@@ -1,16 +1,13 @@
 import numpy as np
 from numpy_pca import NumpyPCA
-#from parallel_pca import ParallelPCA
 from serial_pca import SerialPCA
 import time
 
 serial_pca = SerialPCA()
-#parallel_pca = ParallelPCA()
 np_pca = NumpyPCA()
 
 pca_calculators = [
-  # {"name": "Serial", "pca": serial_pca},
-  # {"name": "Parallel", "pca": parallel_pca},
+  {"name": "Serial", "pca": serial_pca},
   {"name": "Numpy", "pca": np_pca}
 ]
 
@@ -40,7 +37,6 @@ def read_file(file):
   return results
 
 if __name__ == '__main__':
-  print "done reading"
   for calculator in pca_calculators:
     start_time = time.time()
     data = read_file('images.txt')
