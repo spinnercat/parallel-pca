@@ -51,6 +51,7 @@ class MRPCACovParallel(MRJob):
 class MRPCAEigenParallel(MRJob):
 
   def mapper(self, _, line):
+    start_time_y = time.time()
     dataBlockRow = np.array([float(x) for x in line.split()])
     size = len(dataBlockRow) / dimension
     dataBlock = dataBlockRow.reshape((size, dimension))
@@ -68,6 +69,8 @@ class MRPCAEigenParallel(MRJob):
     w = w[idx[:num_eigens]]
     v = v[:,idx[:num_eigens]]
     psi = matrix_multiply(v, (np.diag((per_block * w)**0.5)))
+    end_time_y = time.time()
+    print "MAP TIME ", end_time_y - start_time_y
     yield None, psi 
 
   def reducer(self, _, values):
