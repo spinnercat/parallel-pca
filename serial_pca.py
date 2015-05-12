@@ -4,7 +4,7 @@ import numpy as np
 import utils
 from matrix_utils import matrix_multiply
 
-class SerialPCA(object):
+class SerialPCA(PCA):
     def do_pca(self, data):
         num_blocks = 16
         #return self.doPCA_cov(data, 2)
